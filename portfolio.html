@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rocco Toto · Giochi & progetti</title>
+<meta name="description" content="Di giorno IT Helpdesk, dopo il lavoro creo RPG. Inkborn è online, SoulAspects è in arrivo.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --notte:#0E1026;
+    --notte-2:#141735;
+    --nebbia:rgba(139,124,246,.10);
+    --ametista:#8B7CF6;
+    --oro:#E8B44F;
+    --testo:#E7E6F2;
+    --testo-dim:#9A98B5;
+    --bordo:rgba(139,124,246,.22);
+    --max:1120px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--notte);
+    color:var(--testo);
+    font-family:'Manrope',system-ui,sans-serif;
+    font-size:17px;line-height:1.7;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--ametista);color:var(--notte)}
+  a{color:var(--ametista)}
+  a:focus-visible,button:focus-visible{outline:3px solid var(--oro);outline-offset:3px;border-radius:4px}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 24px}
+  .mono{font-family:'JetBrains Mono',monospace;font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:var(--testo-dim)}
+  h1,h2,h3{font-family:'Archivo',sans-serif;letter-spacing:-.02em}
+  section{scroll-margin-top:80px}
+
+  /* ===== nav ===== */
+  .nav{
+    position:fixed;top:0;left:0;right:0;z-index:50;
+    backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    background:rgba(14,16,38,.6);
+    border-bottom:1px solid rgba(139,124,246,.12);
+  }
+  .nav-inner{display:flex;justify-content:space-between;align-items:center;height:64px}
+  .logo{display:flex;align-items:center;gap:10px;font-family:'Archivo',sans-serif;font-weight:700;font-size:.98rem;letter-spacing:.02em;color:var(--testo);text-decoration:none}
+  .logo .marchio{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:30px;height:30px;border:1.5px solid var(--ametista);border-radius:7px;
+    font-size:.72rem;font-weight:800;color:var(--ametista);letter-spacing:0;
+  }
+  .nav nav a{margin-left:26px;text-decoration:none;font-size:.9rem;font-weight:600;color:var(--testo-dim);transition:color .2s}
+  .nav nav a:hover{color:var(--oro)}
+
+  /* ===== hero ===== */
+  .hero{position:relative;min-height:100svh;display:flex;align-items:center;overflow:hidden}
+  #stelle{position:absolute;inset:0;z-index:0;width:100%;height:100%;display:block}
+  .hero::after{
+    content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+    background:
+      radial-gradient(60% 55% at 75% 20%, rgba(139,124,246,.16), transparent 70%),
+      radial-gradient(45% 45% at 15% 85%, rgba(232,180,79,.08), transparent 70%);
+  }
+  .hero-content{position:relative;z-index:2;padding:120px 0 90px}
+  .hero .mono{display:inline-block}
+  .hero h1{
+    font-weight:800;
+    font-size:clamp(2.3rem,6.2vw,4.2rem);
+    line-height:1.06;
+    letter-spacing:-.025em;
+    max-width:18ch;
+  }
+  .hero h1 .glow{
+    background:linear-gradient(100deg,var(--ametista) 10%,var(--oro) 55%,var(--ametista) 90%);
+    background-size:220% 100%;
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    animation:scorri-gradiente 7s ease-in-out infinite;
+  }
+  @keyframes scorri-gradiente{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+  .hero p.sub{margin-top:26px;max-width:52ch;font-size:1.12rem;color:var(--testo-dim)}
+  .cta-row{margin-top:40px;display:flex;gap:16px;flex-wrap:wrap}
+  .btn{
+    position:relative;display:inline-block;text-decoration:none;font-weight:700;font-size:.95rem;
+    padding:14px 30px;border-radius:10px;transition:transform .18s ease,box-shadow .18s ease;
+    will-change:transform;
+  }
+  .btn-pieno{background:linear-gradient(120deg,var(--ametista),#6A5AE0);color:#fff;box-shadow:0 8px 30px -10px rgba(139,124,246,.7)}
+  .btn-pieno:hover{box-shadow:0 12px 40px -8px rgba(139,124,246,.9)}
+  .btn-linea{border:1.5px solid var(--bordo);color:var(--testo)}
+  .btn-linea:hover{border-color:var(--oro);color:var(--oro)}
+  .scroll-giu{
+    position:absolute;left:50%;bottom:26px;transform:translateX(-50%);z-index:2;
+    color:var(--testo-dim);font-size:1.4rem;text-decoration:none;
+    animation:rimbalza 2.2s ease-in-out infinite;
+  }
+  @keyframes rimbalza{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,10px)}}
+
+  /* entrata hero */
+  .entra{opacity:0;transform:translateY(26px);animation:entra .8s cubic-bezier(.2,.7,.3,1) forwards}
+  .entra.r1{animation-delay:.05s}.entra.r2{animation-delay:.2s}.entra.r3{animation-delay:.38s}.entra.r4{animation-delay:.55s}
+  @keyframes entra{to{opacity:1;transform:none}}
+
+  /* ===== statistiche ===== */
+  .stats{border-top:1px solid var(--bordo);border-bottom:1px solid var(--bordo);background:var(--notte-2)}
+  .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;padding:44px 0}
+  .stat{text-align:center}
+  .stat .num{font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(1.9rem,4vw,3rem);color:var(--oro)}
+  .stat .lab{font-size:.85rem;color:var(--testo-dim);margin-top:4px}
+
+  /* ===== sezioni ===== */
+  section{padding:96px 0}
+  .sez-head{margin-bottom:52px}
+  .sez-head h2{
+    font-weight:800;font-size:clamp(1.9rem,4.5vw,2.8rem);letter-spacing:-.01em;
+    display:inline-block;position:relative;
+  }
+  .sez-head h2::after{
+    content:"";position:absolute;left:0;bottom:-10px;height:3px;width:100%;
+    background:linear-gradient(90deg,var(--ametista),transparent);
+    transform:scaleX(0);transform-origin:left;transition:transform .9s cubic-bezier(.2,.7,.3,1) .15s;
+  }
+  .sez-head p{margin-top:22px;color:var(--testo-dim);max-width:56ch}
+  .rivela.visto .sez-head h2::after{transform:scaleX(1)}
+
+  /* scroll reveal generico */
+  .rivela{opacity:0;transform:translateY(34px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.3,1)}
+  .rivela.visto{opacity:1;transform:none}
+  .ritardo-1{transition-delay:.1s}.ritardo-2{transition-delay:.22s}
+
+  /* ===== progetti ===== */
+  .griglia{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:30px;perspective:1200px}
+  .card{
+    position:relative;border:1px solid var(--bordo);border-radius:16px;
+    background:linear-gradient(160deg,rgba(139,124,246,.07),rgba(20,23,53,.6));
+    padding:36px 32px;display:flex;flex-direction:column;gap:16px;
+    transform-style:preserve-3d;transition:border-color .25s;
+    overflow:hidden;
+  }
+  .card::before{ /* bagliore che segue il cursore */
+    content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+    background:radial-gradient(340px circle at var(--mx,50%) var(--my,50%), rgba(139,124,246,.16), transparent 65%);
+    opacity:0;transition:opacity .3s;
+  }
+  .card:hover::before{opacity:1}
+  .card:hover{border-color:rgba(139,124,246,.5)}
+  .card h3{font-size:1.65rem;font-weight:700}
+  .card p{color:var(--testo-dim);font-size:.98rem}
+  .badge{
+    align-self:flex-start;font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.14em;
+    text-transform:uppercase;padding:6px 12px;border-radius:99px;font-weight:500;
+  }
+  .badge.live{color:#8FF0B4;border:1px solid rgba(143,240,180,.4);background:rgba(143,240,180,.07)}
+  .badge.live::before{content:"●";margin-right:7px;animation:pulsa 1.8s ease-in-out infinite}
+  @keyframes pulsa{0%,100%{opacity:1}50%{opacity:.35}}
+  .badge.wip{color:var(--oro);border:1px solid rgba(232,180,79,.4);background:rgba(232,180,79,.06)}
+  .tag-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto;padding-top:12px}
+  .tag{font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--testo-dim);border:1px solid var(--bordo);padding:5px 10px;border-radius:6px}
+  .link-gioco{font-weight:700;text-decoration:none;width:max-content;transition:color .2s}
+  .link-gioco::after{content:" →";transition:margin-left .2s}
+  .link-gioco:hover{color:var(--oro)}
+  .link-gioco:hover::after{margin-left:5px}
+
+  /* ===== marquee stack ===== */
+  .marquee{border-top:1px solid var(--bordo);border-bottom:1px solid var(--bordo);overflow:hidden;padding:20px 0;background:var(--notte-2)}
+  .marquee-track{display:flex;gap:56px;width:max-content;animation:scorre 26s linear infinite}
+  .marquee:hover .marquee-track{animation-play-state:paused}
+  .marquee span{font-family:'JetBrains Mono',monospace;font-size:.85rem;letter-spacing:.18em;text-transform:uppercase;color:var(--testo-dim);white-space:nowrap}
+  .marquee span i{color:var(--ametista);font-style:normal;margin-right:12px}
+  @keyframes scorre{to{transform:translateX(-50%)}}
+
+  /* ===== chi sono ===== */
+  .due-col{display:grid;grid-template-columns:1.15fr .85fr;gap:64px;align-items:start}
+  .due-col p+p{margin-top:16px}
+  .due-col p{color:var(--testo-dim)}
+  .due-col p strong{color:var(--testo)}
+  .timeline{list-style:none;position:relative;padding-left:28px}
+  .timeline::before{content:"";position:absolute;left:6px;top:6px;bottom:6px;width:2px;background:linear-gradient(var(--ametista),transparent)}
+  .timeline li{position:relative;padding-bottom:26px}
+  .timeline li::before{
+    content:"";position:absolute;left:-27px;top:7px;width:11px;height:11px;border-radius:50%;
+    background:var(--notte);border:2.5px solid var(--ametista);
+  }
+  .timeline li strong{display:block;font-size:.98rem}
+  .timeline li span{font-size:.84rem;color:var(--testo-dim)}
+
+  /* ===== contatti ===== */
+  .contatti{text-align:center;padding:110px 0}
+  .contatti h2{font-weight:800;font-size:clamp(2rem,5vw,3.2rem)}
+  .contatti p{margin:18px auto 0;max-width:46ch;color:var(--testo-dim)}
+  footer{border-top:1px solid var(--bordo);padding:26px 0;font-size:.82rem;color:var(--testo-dim)}
+  footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+
+  @media (max-width:820px){
+    .stats-grid{grid-template-columns:repeat(2,1fr);gap:30px}
+    .due-col{grid-template-columns:1fr;gap:44px}
+    section{padding:72px 0}
+    .nav nav a{margin-left:16px;font-size:.84rem}
+  }
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    *,*::before,*::after{animation:none!important;transition:none!important}
+    .entra,.rivela{opacity:1;transform:none}
+    #stelle{display:none}
+  }
+</style>
+</head>
+<body>
+
+<div class="nav">
+  <div class="wrap nav-inner">
+    <a class="logo" href="#"><span class="marchio">RT</span>Rocco Toto</a>
+    <nav aria-label="Navigazione">
+      <a href="#progetti">Progetti</a>
+      <a href="#chi-sono">Chi sono</a>
+      <a href="#contatti">Contatti</a>
+    </nav>
+  </div>
+</div>
+
+<header class="hero">
+  <canvas id="stelle" aria-hidden="true"></canvas>
+  <div class="wrap hero-content">
+    <h1 class="entra r1">Di giorno risolvo ticket.<br>Di notte <span class="glow">creo mondi.</span></h1>
+    <p class="sub entra r2">IT Helpdesk in Zucchetti dalle 9 alle 18. Dopo, progetto e pubblico RPG: idea, game design, sviluppo, deploy — tutto dall'inizio alla fine. Uno è già online. Il prossimo è in arrivo.</p>
+    <div class="cta-row entra r3">
+      <a class="btn btn-pieno" href="#progetti">Guarda i giochi</a>
+      <a class="btn btn-linea" href="https://www.linkedin.com/in/rocco-toto-104a26382" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </div>
+  <a class="scroll-giu" href="#numeri" aria-label="Scorri in basso">↓</a>
+</header>
+
+<div class="stats" id="numeri">
+  <div class="wrap stats-grid">
+    <div class="stat"><div class="num" data-conta="1">0</div><div class="lab">gioco online</div></div>
+    <div class="stat"><div class="num" data-conta="57">0</div><div class="lab">test di regressione</div></div>
+    <div class="stat"><div class="num" data-conta="8">0</div><div class="lab">boss di raid da abbattere</div></div>
+    <div class="stat"><div class="num">∞</div><div class="lab">caffè</div></div>
+  </div>
+</div>
+
+<main>
+  <section id="progetti" class="rivela">
+    <div class="wrap">
+      <div class="sez-head">
+        <span class="mono">01 — Progetti</span>
+        <h2>Mondi in circolazione</h2>
+        <p>Quelli usciti dalla porta e quello che sta per uscirne. Niente mockup: roba giocabile o in lavorazione vera.</p>
+      </div>
+      <div class="griglia">
+
+        <article class="card tilt rivela ritardo-1">
+          <span class="badge live">Giocabile ora</span>
+          <h3>Inkborn</h3>
+          <p>RPG HTML5 per mobile e browser: classi e sottoclassi, raid con otto boss, pet collezionabili, gilde e salvataggi cloud. Bilingue IT/EN, con una suite di 57 test a guardia di ogni rilascio.</p>
+          <!-- https://spectacular-conkies-0dfca4.netlify.app -->
+          <a class="link-gioco" href="#" target="_blank" rel="noopener">Gioca a Inkborn</a>
+          <div class="tag-row">
+            <span class="tag">HTML5</span><span class="tag">Supabase</span><span class="tag">Netlify</span><span class="tag">i18n</span>
+          </div>
+        </article>
+
+        <article class="card tilt rivela ritardo-2">
+          <span class="badge wip">In sviluppo</span>
+          <h3>SoulAspects</h3>
+          <p>MMORPG mobile in pre-produzione per Android e iOS: Unity 6, simulazione condivisa in C#, server .NET 8. Direzione artistica in esplorazione tra xilografia e sumi-e. Devlog in arrivo.</p>
+          <span class="mono" style="letter-spacing:.1em">— presto qui —</span>
+          <div class="tag-row">
+            <span class="tag">Unity 6</span><span class="tag">C#</span><span class="tag">.NET 8</span><span class="tag">Mobile</span>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <span><i>◆</i>HTML5</span><span><i>◆</i>Supabase</span><span><i>◆</i>Netlify</span><span><i>◆</i>Unity 6</span><span><i>◆</i>C#</span><span><i>◆</i>.NET 8</span><span><i>◆</i>Google Ads</span><span><i>◆</i>Service Desk</span><span><i>◆</i>Game Design</span>
+      <span><i>◆</i>HTML5</span><span><i>◆</i>Supabase</span><span><i>◆</i>Netlify</span><span><i>◆</i>Unity 6</span><span><i>◆</i>C#</span><span><i>◆</i>.NET 8</span><span><i>◆</i>Google Ads</span><span><i>◆</i>Service Desk</span><span><i>◆</i>Game Design</span>
+    </div>
+  </div>
+
+  <section id="chi-sono" class="rivela">
+    <div class="wrap">
+      <div class="sez-head">
+        <span class="mono">02 — Chi sono</span>
+        <h2>Il percorso</h2>
+      </div>
+      <div class="due-col">
+        <div>
+          <p><strong>Sono un professionista IT con il vizio di costruire giochi.</strong> In Zucchetti faccio supporto tecnico e applicativo: analizzo, risolvo, faccio escalation quando serve. È un lavoro che insegna a capire i problemi degli altri in fretta — e a spiegarli in modo semplice.</p>
+          <p>Fuori orario seguo l'intero ciclo di un gioco: <strong>idea, game design, sviluppo, deploy e iterazione con i giocatori.</strong> Decido cosa costruire, come deve funzionare e quando è pronto — e lo porto fino in fondo.</p>
+          <p>Prima dell'IT: cinque anni di vendite con responsabilità operative e magazzini ad alti volumi. Organizzazione, comunicazione chiara e sangue freddo li ho imparati lì.</p>
+        </div>
+        <ul class="timeline">
+          <li><strong>IT Helpdesk — Zucchetti</strong><span>2025 – oggi · Service Desk, supporto tecnico e applicativo</span></li>
+          <li><strong>Addetto vendite — SCOUT</strong><span>2020 – 2025 · responsabilità operative, supporto al team</span></li>
+          <li><strong>Logistica — Amazon, PAC2000</strong><span>2017 – 2020 · magazzino, contesti ad alta pressione</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="contatti" class="contatti rivela">
+    <div class="wrap">
+      <span class="mono">03 — Contatti</span>
+      <h2 style="margin-top:16px">Parliamone.</h2>
+      <p>Aperto a confronti e opportunità in ambito IT e sviluppo software. Oppure passa solo a dirmi che hai battuto l'ottavo boss.</p>
+      <div class="cta-row" style="justify-content:center;margin-top:34px">
+        <a class="btn btn-pieno" href="https://www.linkedin.com/in/rocco-toto-104a26382" target="_blank" rel="noopener">Scrivimi su LinkedIn</a>
+        <!-- Se vuoi: <a class="btn btn-linea" href="mailto:TUA-EMAIL">Email</a> -->
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Rocco Toto</span>
+    <span>Fatto dopo cena, a colpi di caffè.</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  const riduci = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---- particelle hero ---- */
+  const cv = document.getElementById('stelle');
+  if (cv && !riduci) {
+    const ctx = cv.getContext('2d');
+    let W, H, punti = [], mx = -999, my = -999;
+    function misura(){
+      W = cv.width = cv.offsetWidth * devicePixelRatio;
+      H = cv.height = cv.offsetHeight * devicePixelRatio;
+    }
+    function crea(){
+      punti = [];
+      const n = Math.min(380, Math.floor(cv.offsetWidth / 3.2));
+      for (let i = 0; i < n; i++){
+        punti.push({
+          x: Math.random()*W, y: Math.random()*H,
+          r: (Math.random()*1.9 + .4) * devicePixelRatio,
+          vy: -(Math.random()*.3 + .07) * devicePixelRatio,
+          vx: (Math.random()-.5) * .15 * devicePixelRatio,
+          a: Math.random()*.55 + .18,
+          oro: Math.random() < .2
+        });
+      }
+      /* orbe grandi e sfocate che derivano lentamente su tutto lo sfondo */
+      for (let i = 0; i < 9; i++){
+        punti.push({
+          x: Math.random()*W, y: Math.random()*H,
+          r: (Math.random()*26 + 14) * devicePixelRatio,
+          vy: -(Math.random()*.08 + .02) * devicePixelRatio,
+          vx: (Math.random()-.5) * .06 * devicePixelRatio,
+          a: Math.random()*.05 + .03,
+          oro: Math.random() < .3,
+          orbe: true
+        });
+      }
+    }
+    function disegna(){
+      ctx.clearRect(0,0,W,H);
+      for (const p of punti){
+        /* leggera repulsione dal cursore */
+        const dx = p.x - mx, dy = p.y - my, d2 = dx*dx + dy*dy;
+        if (!p.orbe && d2 < 12000 * devicePixelRatio){
+          p.x += dx * .012; p.y += dy * .012;
+        }
+        p.x += p.vx; p.y += p.vy;
+        if (p.y < -60) { p.y = H + 60; p.x = Math.random()*W; }
+        if (p.x < -60) p.x = W + 60;
+        if (p.x > W + 60) p.x = -60;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+        if (p.orbe){
+          const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r);
+          g.addColorStop(0, p.oro ? 'rgba(232,180,79,' + p.a + ')' : 'rgba(139,124,246,' + p.a + ')');
+          g.addColorStop(1, 'rgba(0,0,0,0)');
+          ctx.fillStyle = g;
+        } else {
+          ctx.fillStyle = p.oro
+            ? 'rgba(232,180,79,' + p.a + ')'
+            : 'rgba(139,124,246,' + p.a + ')';
+        }
+        ctx.fill();
+      }
+      requestAnimationFrame(disegna);
+    }
+    misura(); crea(); disegna();
+    addEventListener('resize', () => { misura(); crea(); });
+    cv.parentElement.addEventListener('pointermove', e => {
+      const r = cv.getBoundingClientRect();
+      mx = (e.clientX - r.left) * devicePixelRatio;
+      my = (e.clientY - r.top) * devicePixelRatio;
+    });
+    cv.parentElement.addEventListener('pointerleave', () => { mx = my = -999; });
+  }
+
+  /* ---- scroll reveal ---- */
+  const oss = new IntersectionObserver(voci => {
+    voci.forEach(v => { if (v.isIntersecting){ v.target.classList.add('visto'); oss.unobserve(v.target); } });
+  }, { threshold:.15 });
+  document.querySelectorAll('.rivela').forEach(el => oss.observe(el));
+
+  /* ---- contatori animati ---- */
+  const ossNum = new IntersectionObserver(voci => {
+    voci.forEach(v => {
+      if (!v.isIntersecting) return;
+      const el = v.target, fine = +el.dataset.conta, durata = 1300, t0 = performance.now();
+      if (riduci){ el.textContent = fine; ossNum.unobserve(el); return; }
+      (function passo(t){
+        const k = Math.min((t - t0) / durata, 1);
+        el.textContent = Math.round(fine * (1 - Math.pow(1 - k, 3)));
+        if (k < 1) requestAnimationFrame(passo);
+      })(t0);
+      ossNum.unobserve(el);
+    });
+  }, { threshold:.6 });
+  document.querySelectorAll('[data-conta]').forEach(el => ossNum.observe(el));
+
+  /* ---- tilt 3D + bagliore sulle card ---- */
+  if (!riduci && matchMedia('(pointer:fine)').matches){
+    document.querySelectorAll('.tilt').forEach(card => {
+      card.addEventListener('pointermove', e => {
+        const r = card.getBoundingClientRect();
+        const px = (e.clientX - r.left) / r.width;
+        const py = (e.clientY - r.top) / r.height;
+        card.style.transform = 'rotateY(' + ((px - .5) * 8) + 'deg) rotateX(' + ((.5 - py) * 8) + 'deg) translateY(-4px)';
+        card.style.setProperty('--mx', (px*100) + '%');
+        card.style.setProperty('--my', (py*100) + '%');
+      });
+      card.addEventListener('pointerleave', () => { card.style.transform = ''; });
+    });
+  }
+})();
+</script>
+</body>
+</html>
